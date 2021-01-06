@@ -71,7 +71,7 @@ class Machine {
             Console.WriteLine();
             Console.WriteLine("STACKPTR: " + stack.curr);
         });
-        instructions.Add("prt", () => { Console.WriteLine(stack.pop()); });
+        instructions.Add("prt", () => { Console.WriteLine(stack.get()); });
         instructions.Add("add", () => {
             // add [a, b]
             reg[4] = stack.pop();
@@ -120,34 +120,31 @@ class Machine {
         });
         instructions.Add("jmp", () => {
             // jmp dst
-            //reg[4] = stack.pop();
             reg[7] = reg[0];
         });
         instructions.Add("jz", () => {
             // jz dst, [val]
-            reg[4] = stack.pop();
+            reg[4] = stack.get();
             if (reg[4] == 0) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("jnz", () => {
             // jnz dst, [val]
-            reg[4] = stack.pop();
+            reg[4] = stack.get();
             if (reg[4] != 0) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("je", () => {
-            // je dst, [val, val2]
-            reg[4] = stack.pop();
+            // je dst, [val], reg4
             reg[5] = stack.pop();
             if (reg[4] == reg[5]) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("jne", () => {
-            // jne dst, [val, val2]
-            reg[4] = stack.pop();
+            // jne dst, [val], reg4
             reg[5] = stack.pop();
             if (reg[4] != reg[5]) {
                 reg[7] = reg[0];
@@ -222,8 +219,8 @@ class Stack<T> {
         return val;
     }
 
-    public T get(int i) {
-        return storage[i];
+    public T get() {
+        return storage[0];
     }
 
     public List<T> elements() {

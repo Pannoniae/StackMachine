@@ -1,0 +1,239 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
+class Machine {
+    
+    // const
+    public const bool CODE_DUMP = true;
+    private Stack<int> stack;
+    private string[] code;
+    private Dictionary<string, Action> instructions = new Dictionary<string, Action>();
+
+    private int[] reg = new int[16]; // registers
+    /*
+     * 0-3 = instruction arguments
+     * 4-6 = stack operands
+     * 7 = jmp counter
+     * 8 = loop counter
+     * 9-15 = general purpose
+     */
+
+    public Machine(string[] code) {
+        this.code = code;
+        stack = new Stack<int>();
+        setupInstructions();
+        processLabels();
+    }
+
+    private void processLabels() {
+        var labels = new Dictionary<string, int>();
+        for (var i = 0; i < code.Length; i++) {
+            var line = code[i];
+            if (line.StartsWith(":")) {
+                labels.Add(line.Substring(1), i);
+                code[i] = "";
+            }
+        }
+
+        for (var i = 0; i < code.Length; i++) {
+            foreach (var label in labels) {
+                code[i] = code[i].Replace(label.Key, label.Value.ToString());
+            }
+        }
+
+        if (CODE_DUMP) {
+            for (var i = 0; i < code.Length; i++) {
+                var o = code[i];
+                Console.Out.WriteLine($"{i}: {o}");
+            }
+        }
+    }
+
+    private void setupInstructions() {
+        /*
+         * inst format:
+         * <inst> <arg1>,<arg2>...
+         * <inst> [<stackarg1>,<stackarg2>...]
+         */
+        instructions.Add("push", () => { stack.push(reg[0]); });
+        instructions.Add("pop", () => { stack.pop(); });
+        instructions.Add("dmp", () => {
+            Console.WriteLine("DUMP:");
+            foreach (var el in stack.elements()) {
+                Console.Write(el + " ");
+            }
+            Console.WriteLine();
+            Console.WriteLine("REGISTERS:");
+            foreach (var el in reg) {
+                Console.Write(el + " ");
+            }
+            Console.WriteLine();
+            Console.WriteLine("STACKPTR: " + stack.curr);
+        });
+        instructions.Add("prt", () => { Console.WriteLine(stack.pop()); });
+        instructions.Add("add", () => {
+            // add [a, b]
+            reg[4] = stack.pop();
+            reg[5] = stack.pop();
+            stack.push(reg[4] + reg[5]);
+        });
+        instructions.Add("sub", () => {
+            // sub [a, b]
+            reg[4] = stack.pop();
+            reg[5] = stack.pop();
+            stack.push(reg[4] - reg[5]);
+        });
+        instructions.Add("mul", () => {
+            // mul [a, b]
+            reg[4] = stack.pop();
+            reg[5] = stack.pop();
+            stack.push(reg[4] * reg[5]);
+        });
+        instructions.Add("set", () => {
+            // set reg, num
+            reg[reg[0]] = reg[1];
+        });
+        instructions.Add("dec", () => {
+            // dec reg
+            reg[reg[0]] = reg[reg[0]] - 1;
+        });
+        instructions.Add("inc", () => {
+            // inc reg
+            reg[reg[0]] = reg[reg[0]] + 1;
+        });
+        instructions.Add("swp", () => {
+            // swp
+            reg[4] = stack.pop();
+            reg[5] = stack.pop();
+            stack.push(reg[4]);
+            stack.push(reg[5]);
+        });
+        instructions.Add("mov", () => {
+            // mov reg, [num]
+            reg[4] = stack.pop();
+            reg[reg[0]] = reg[4];
+        });
+        instructions.Add("rmov", () => {
+            //rmov reg
+            stack.push(reg[reg[0]]);
+        });
+        instructions.Add("jmp", () => {
+            // jmp dst
+            //reg[4] = stack.pop();
+            reg[7] = reg[0];
+        });
+        instructions.Add("jz", () => {
+            // jz dst, [val]
+            reg[4] = stack.pop();
+            if (reg[4] == 0) {
+                reg[7] = reg[0];
+            }
+        });
+        instructions.Add("jnz", () => {
+            // jnz dst, [val]
+            reg[4] = stack.pop();
+            if (reg[4] != 0) {
+                reg[7] = reg[0];
+            }
+        });
+        instructions.Add("je", () => {
+            // je dst, [val, val2]
+            reg[4] = stack.pop();
+            reg[5] = stack.pop();
+            if (reg[4] == reg[5]) {
+                reg[7] = reg[0];
+            }
+        });
+        instructions.Add("jne", () => {
+            // jne dst, [val, val2]
+            reg[4] = stack.pop();
+            reg[5] = stack.pop();
+            if (reg[4] != reg[5]) {
+                reg[7] = reg[0];
+            }
+        });
+    }
+
+    public void execute() {
+        for (var i = 0; i < code.Length; i++) {
+            var line = code[i];
+            if (line.StartsWith("-") || line == string.Empty) {
+                // rem
+                continue;
+            }
+            //Console.WriteLine("lineno: " + i);
+            var instSep = line.IndexOf(" "); // after the instruction, before any arguments
+            if (instSep == -1) {
+                // no args
+                executeInstruction(line); // just push the whole thing in, there are no args
+                continue;
+            }
+
+            var inst = line.Substring(0, instSep);
+            var args = line.Substring(instSep + 1).Replace(" ", "").Split(",");
+            executeInstruction(inst, args);
+            if (reg[7] != 0) {
+                // test jmp counter after inst
+                i = reg[7]; // jump to line
+                reg[7] = 0; // clear jmp counter
+            }
+        }
+
+        ;
+    }
+
+    private void executeInstruction(string inst, params string[] args) {
+        for (int i = 0; i < args.Length; i++) {
+            reg[i] = int.Parse(args[i]);
+        }
+
+        instructions[inst]();
+    }
+}
+
+class Stack<T> {
+    private const int MAX = 16;
+    public int curr; // current element's index
+    private T[] storage = new T[MAX];
+
+
+    public Stack() {
+        curr = -1;
+    }
+
+    public void push(T el) {
+        if (curr == MAX - 1) {
+            Console.WriteLine($"STACK OVERFLOW, tried to push {el}");
+        }
+
+        curr++;
+        storage[curr] = el;
+    }
+
+    public T pop() {
+        if (curr == -1) {
+            Console.WriteLine($"STACK UNDERFLOW, tried to pop");
+        }
+
+        T val = storage[curr];
+        storage[curr] = default;
+        curr--;
+        return val;
+    }
+
+    public T get(int i) {
+        return storage[i];
+    }
+
+    public List<T> elements() {
+        return new List<T>(storage);
+    }
+}
+
+class Program {
+    static void Main(string[] args) {
+        var machine = new Machine(File.ReadAllLines("code.txt"));
+        machine.execute();
+    }
+}

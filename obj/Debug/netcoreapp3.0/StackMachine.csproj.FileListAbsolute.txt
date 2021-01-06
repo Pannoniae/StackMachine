@@ -1,0 +1,12 @@
+D:\dev\c#\matek\StackMachine\bin\Debug\netcoreapp3.0\StackMachine.exe
+D:\dev\c#\matek\StackMachine\bin\Debug\netcoreapp3.0\StackMachine.deps.json
+D:\dev\c#\matek\StackMachine\bin\Debug\netcoreapp3.0\StackMachine.runtimeconfig.json
+D:\dev\c#\matek\StackMachine\bin\Debug\netcoreapp3.0\StackMachine.runtimeconfig.dev.json
+D:\dev\c#\matek\StackMachine\bin\Debug\netcoreapp3.0\StackMachine.dll
+D:\dev\c#\matek\StackMachine\bin\Debug\netcoreapp3.0\StackMachine.pdb
+D:\dev\c#\matek\StackMachine\obj\Debug\netcoreapp3.0\StackMachine.csprojAssemblyReference.cache
+D:\dev\c#\matek\StackMachine\obj\Debug\netcoreapp3.0\StackMachine.AssemblyInfoInputs.cache
+D:\dev\c#\matek\StackMachine\obj\Debug\netcoreapp3.0\StackMachine.AssemblyInfo.cs
+D:\dev\c#\matek\StackMachine\obj\Debug\netcoreapp3.0\StackMachine.dll
+D:\dev\c#\matek\StackMachine\obj\Debug\netcoreapp3.0\StackMachine.pdb
+D:\dev\c#\matek\StackMachine\bin\Debug\netcoreapp3.0\code.txt

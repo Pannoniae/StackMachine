@@ -22,8 +22,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3294d390-e470-446f-89cc-615f9105b2c4" name="Default Changelist" comment="- modify je, jne to use pre-pushed registers instead of stack popping">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="3294d390-e470-446f-89cc-615f9105b2c4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -109,7 +108,7 @@
       <workItem from="1609935935309" duration="334000" />
       <workItem from="1609938080876" duration="11559000" />
       <workItem from="1609951977731" duration="6082000" />
-      <workItem from="1609973108085" duration="3782000" />
+      <workItem from="1609973108085" duration="3807000" />
     </task>
     <task id="LOCAL-00001" summary="- modify je, jne to use pre-pushed registers instead of stack popping">
       <created>1609977019412</created>
@@ -118,7 +117,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609977019412</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="- add bit instructions">
+      <created>1609978063955</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1609978063955</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -140,13 +146,18 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="- modify je, jne to use pre-pushed registers instead of stack popping" />
-    <option name="LAST_COMMIT_MESSAGE" value="- modify je, jne to use pre-pushed registers instead of stack popping" />
+    <MESSAGE value="- add bit instructions" />
+    <option name="LAST_COMMIT_MESSAGE" value="- add bit instructions" />
   </component>
   <component name="WindowStateProjectService">
     <state x="663" y="344" key="#Notifications" timestamp="1609956276730">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="663" y="344" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1609956276730" />
+    <state x="585" y="98" key="CommitChangelistDialog2" timestamp="1609978063545">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="585" y="98" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1609978063545" />
     <state x="828" y="417" width="433" height="255" key="Github.ShareDialog" timestamp="1609956568832">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -183,10 +194,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="164" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1609956313102" />
-    <state x="552" y="239" key="Vcs.Push.Dialog.v2" timestamp="1609977020536">
+    <state x="552" y="239" key="Vcs.Push.Dialog.v2" timestamp="1609978064969">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="239" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1609977020536" />
+    <state x="552" y="239" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1609978064969" />
     <state width="561" height="113" key="javadoc.popup.new" timestamp="1609950092911">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

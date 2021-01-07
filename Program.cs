@@ -163,11 +163,11 @@ class Machine {
             reg[reg[0]] ^= 1 << reg[1];
         });
         instructions.Add("stb", () => {
-            // not reg, idx
+            // stb reg, idx
             reg[reg[0]] |= 1 << reg[1];
         });
         instructions.Add("clr", () => {
-            // not reg, idx
+            // clr reg, idx
             reg[reg[0]] &= ~(1 << reg[1]);
         });
     }

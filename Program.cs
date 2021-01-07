@@ -137,18 +137,38 @@ class Machine {
             }
         });
         instructions.Add("je", () => {
-            // je dst, [val], reg4
-            reg[5] = stack.pop();
+            // je dst, reg4, [val] 
+            reg[5] = stack.get();
             if (reg[4] == reg[5]) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("jne", () => {
-            // jne dst, [val], reg4
-            reg[5] = stack.pop();
+            // jne dst, reg4, [val]
+            reg[5] = stack.get();
             if (reg[4] != reg[5]) {
                 reg[7] = reg[0];
             }
+        });
+        instructions.Add("shr", () => {
+            // shr reg, cnt
+            reg[reg[0]] = reg[reg[0]] >> reg[1];
+        });
+        instructions.Add("shl", () => {
+            // shl reg, cnt
+            reg[reg[0]] = reg[reg[0]] << reg[1];
+        });
+        instructions.Add("not", () => {
+            // not reg, idx
+            reg[reg[0]] ^= 1 << reg[1];
+        });
+        instructions.Add("stb", () => {
+            // not reg, idx
+            reg[reg[0]] |= 1 << reg[1];
+        });
+        instructions.Add("clr", () => {
+            // not reg, idx
+            reg[reg[0]] &= ~(1 << reg[1]);
         });
     }
 

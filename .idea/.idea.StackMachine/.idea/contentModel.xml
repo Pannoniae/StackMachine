@@ -6,6 +6,7 @@
     <e p="C:\Users\prisz\AppData\Roaming\JetBrains\Rider2020.2\scratches" t="IncludeRecursive" />
     <e p="D:\dev\c#\matek\StackMachine" t="IncludeRecursive">
       <e p=".git\info\exclude" t="IncludeRecursive" />
+      <e p=".gitignore" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="code.txt" t="Include" />
       <e p="obj" t="ExcludeRecursive">

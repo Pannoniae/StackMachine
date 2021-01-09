@@ -30,7 +30,6 @@ enum Instructions : byte {
     not,
     stb,
     clr
-
 }
 
 enum Registers : byte {
@@ -53,7 +52,6 @@ enum Registers : byte {
 }
 
 class Machine {
-    
     // const
     public const bool CODE_DUMP = false;
     private Stack<int> stack;
@@ -109,19 +107,18 @@ class Machine {
         instructions.Add("push", () => { stack.push(reg[0]); });
         instructions.Add("pop", () => { stack.pop(); });
         instructions.Add("dmp", () => {
+            Console.WriteLine("STACKPTR: " + stack.curr);
             Console.WriteLine("DUMP:");
-            foreach (var el in stack.elements().GetRange(0, stack.curr+1)) {
+            foreach (var el in stack.elements().GetRange(0, stack.curr + 1)) {
                 Console.Write(el + " ");
             }
+
             Console.WriteLine();
             Console.WriteLine("REGISTERS:");
             for (var i = 0; i < reg.Length; i++) {
                 var el = reg[i];
-                Console.WriteLine($"{(Registers)i}: {el}");
+                Console.WriteLine($"{(Registers) i}: {el}");
             }
-
-            Console.WriteLine();
-            Console.WriteLine("STACKPTR: " + stack.curr);
         });
         instructions.Add("prt", () => { Console.WriteLine(stack.get()); });
         instructions.Add("add", () => {
@@ -235,6 +232,7 @@ class Machine {
                 // rem
                 continue;
             }
+
             //Console.WriteLine("lineno: " + i);
             var instSep = line.IndexOf(" "); // after the instruction, before any arguments
             if (instSep == -1) {

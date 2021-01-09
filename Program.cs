@@ -36,7 +36,7 @@ enum Instructions : byte {
 class Machine {
     
     // const
-    public const bool CODE_DUMP = true;
+    public const bool CODE_DUMP = false;
     private Stack<int> stack;
     private string[] code;
     private Dictionary<string, Action> instructions = new();
@@ -96,6 +96,12 @@ class Machine {
             }
             Console.WriteLine();
             Console.WriteLine("REGISTERS:");
+            Console.Write(new string(' ', stack.curr * 2));
+            Console.Write('|');
+            Console.WriteLine();
+            Console.Write(new string(' ', stack.curr * 2));
+            Console.Write('v');
+            Console.WriteLine();
             foreach (var el in reg) {
                 Console.Write(el + " ");
             }

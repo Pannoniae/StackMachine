@@ -1,9 +1,12 @@
 ﻿- the number, pushed to the stack in reverse
 push 0
+dmp
 push 0
 push 0
 push 0
 push 0
+
+dmp
 
 - setup num length
 set 8, 2

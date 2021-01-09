@@ -115,9 +115,11 @@ class Machine {
             }
             Console.WriteLine();
             Console.WriteLine("REGISTERS:");
-            foreach (var el in reg) {
-                Console.Write(el + " ");
+            for (var i = 0; i < reg.Length; i++) {
+                var el = reg[i];
+                Console.WriteLine($"{(Registers)i}: {el}");
             }
+
             Console.WriteLine();
             Console.WriteLine("STACKPTR: " + stack.curr);
         });

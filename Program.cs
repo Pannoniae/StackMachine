@@ -33,6 +33,25 @@ enum Instructions : byte {
 
 }
 
+enum Registers : byte {
+    arg0,
+    arg1,
+    arg2,
+    arg3,
+    reg4,
+    reg5,
+    reg6,
+    jmp,
+    loop,
+    reg9,
+    regA,
+    regB,
+    regC,
+    regD,
+    regE,
+    regF
+}
+
 class Machine {
     
     // const
@@ -44,7 +63,7 @@ class Machine {
     private int[] reg = new int[16]; // registers
     /*
      * 0-3 = instruction arguments
-     * 4-6 = stack operands
+     * 4-6 - general purpose
      * 7 = jmp counter
      * 8 = loop counter
      * 9-15 = general purpose
@@ -90,14 +109,8 @@ class Machine {
         instructions.Add("push", () => { stack.push(reg[0]); });
         instructions.Add("pop", () => { stack.pop(); });
         instructions.Add("dmp", () => {
-            Console.Write(new string(' ', stack.curr * 2));
-            Console.Write('|');
-            Console.WriteLine();
-            Console.Write(new string(' ', stack.curr * 2));
-            Console.Write('v');
-            Console.WriteLine();
             Console.WriteLine("DUMP:");
-            foreach (var el in stack.elements()) {
+            foreach (var el in stack.elements().GetRange(0, stack.curr+1)) {
                 Console.Write(el + " ");
             }
             Console.WriteLine();
@@ -111,21 +124,21 @@ class Machine {
         instructions.Add("prt", () => { Console.WriteLine(stack.get()); });
         instructions.Add("add", () => {
             // add [a, b]
-            reg[4] = stack.pop();
-            reg[5] = stack.pop();
-            stack.push(reg[4] + reg[5]);
+            reg[0] = stack.pop();
+            reg[1] = stack.pop();
+            stack.push(reg[0] + reg[1]);
         });
         instructions.Add("sub", () => {
             // sub [a, b]
-            reg[4] = stack.pop();
-            reg[5] = stack.pop();
-            stack.push(reg[4] - reg[5]);
+            reg[0] = stack.pop();
+            reg[1] = stack.pop();
+            stack.push(reg[0] - reg[1]);
         });
         instructions.Add("mul", () => {
             // mul [a, b]
-            reg[4] = stack.pop();
-            reg[5] = stack.pop();
-            stack.push(reg[4] * reg[5]);
+            reg[0] = stack.pop();
+            reg[1] = stack.pop();
+            stack.push(reg[0] * reg[1]);
         });
         instructions.Add("set", () => {
             // set reg, num
@@ -141,15 +154,15 @@ class Machine {
         });
         instructions.Add("swp", () => {
             // swp
-            reg[4] = stack.pop();
-            reg[5] = stack.pop();
-            stack.push(reg[4]);
-            stack.push(reg[5]);
+            reg[0] = stack.pop();
+            reg[1] = stack.pop();
+            stack.push(reg[0]);
+            stack.push(reg[1]);
         });
         instructions.Add("mov", () => {
             // mov reg, [num]
-            reg[4] = stack.get();
-            reg[reg[0]] = reg[4];
+            reg[1] = stack.get();
+            reg[reg[0]] = reg[1];
         });
         instructions.Add("rmov", () => {
             //rmov reg
@@ -165,29 +178,29 @@ class Machine {
         });
         instructions.Add("jz", () => {
             // jz dst, [val]
-            reg[4] = stack.get();
-            if (reg[4] == 0) {
+            reg[1] = stack.get();
+            if (reg[1] == 0) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("jnz", () => {
             // jnz dst, [val]
-            reg[4] = stack.get();
-            if (reg[4] != 0) {
+            reg[1] = stack.get();
+            if (reg[1] != 0) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("je", () => {
-            // je dst, reg4, [val] 
-            reg[5] = stack.get();
-            if (reg[4] == reg[5]) {
+            // je dst, reg1, [val] 
+            reg[2] = stack.get();
+            if (reg[1] == reg[2]) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("jne", () => {
-            // jne dst, reg4, [val]
-            reg[5] = stack.get();
-            if (reg[4] != reg[5]) {
+            // jne dst, reg1, [val]
+            reg[2] = stack.get();
+            if (reg[1] != reg[2]) {
                 reg[7] = reg[0];
             }
         });
@@ -216,7 +229,7 @@ class Machine {
     public void execute() {
         for (var i = 0; i < code.Length; i++) {
             var line = code[i];
-            if (line.StartsWith("-") || line == string.Empty) {
+            if (line.StartsWith("#") || line == string.Empty) {
                 // rem
                 continue;
             }
@@ -251,7 +264,7 @@ class Machine {
 }
 
 class Stack<T> {
-    private const int MAX = 16;
+    private const int MAX = 256;
     public int curr; // current element's index
     private T[] storage = new T[MAX];
 

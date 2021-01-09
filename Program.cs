@@ -2,13 +2,44 @@
 using System.Collections.Generic;
 using System.IO;
 
+enum Instructions : byte {
+    push,
+    pop,
+    dmp,
+    prt,
+    add,
+    add_r,
+    sub,
+    sub_r,
+    mul,
+    mul_r,
+    set,
+    dec,
+    inc,
+    swp,
+    mov_r2s, // register to stack
+    mov_s2r, // stack to register
+    mov_r2r, // register to register
+    jmp,
+    jz,
+    jnz,
+    je,
+    jne,
+    shr,
+    shl,
+    not,
+    stb,
+    clr
+
+}
+
 class Machine {
     
     // const
     public const bool CODE_DUMP = true;
     private Stack<int> stack;
     private string[] code;
-    private Dictionary<string, Action> instructions = new Dictionary<string, Action>();
+    private Dictionary<string, Action> instructions = new();
 
     private int[] reg = new int[16]; // registers
     /*
@@ -111,12 +142,16 @@ class Machine {
         });
         instructions.Add("mov", () => {
             // mov reg, [num]
-            reg[4] = stack.pop();
+            reg[4] = stack.get();
             reg[reg[0]] = reg[4];
         });
         instructions.Add("rmov", () => {
             //rmov reg
             stack.push(reg[reg[0]]);
+        });
+        instructions.Add("smov", () => {
+            //smov reg, reg2
+            reg[reg[1]] = reg[reg[0]];
         });
         instructions.Add("jmp", () => {
             // jmp dst
@@ -244,7 +279,7 @@ class Stack<T> {
     }
 
     public List<T> elements() {
-        return new List<T>(storage);
+        return new(storage);
     }
 }
 

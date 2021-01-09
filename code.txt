@@ -1,9 +1,9 @@
 ﻿- the number, pushed to the stack in reverse
 push 0
+dmp
 push 0
 push 1
 push 0
-push 1
 
 dmp
 

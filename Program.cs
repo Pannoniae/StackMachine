@@ -36,7 +36,7 @@ enum Instructions : byte {
 class Machine {
     
     // const
-    public const bool CODE_DUMP = true;
+    public const bool CODE_DUMP = false;
     private Stack<int> stack;
     private string[] code;
     private Dictionary<string, Action> instructions = new();
@@ -90,6 +90,12 @@ class Machine {
         instructions.Add("push", () => { stack.push(reg[0]); });
         instructions.Add("pop", () => { stack.pop(); });
         instructions.Add("dmp", () => {
+            Console.Write(new string(' ', stack.curr * 2));
+            Console.Write('|');
+            Console.WriteLine();
+            Console.Write(new string(' ', stack.curr * 2));
+            Console.Write('v');
+            Console.WriteLine();
             Console.WriteLine("DUMP:");
             foreach (var el in stack.elements()) {
                 Console.Write(el + " ");

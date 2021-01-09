@@ -90,18 +90,18 @@ class Machine {
         instructions.Add("push", () => { stack.push(reg[0]); });
         instructions.Add("pop", () => { stack.pop(); });
         instructions.Add("dmp", () => {
-            Console.WriteLine("DUMP:");
-            foreach (var el in stack.elements()) {
-                Console.Write(el + " ");
-            }
-            Console.WriteLine();
-            Console.WriteLine("REGISTERS:");
             Console.Write(new string(' ', stack.curr * 2));
             Console.Write('|');
             Console.WriteLine();
             Console.Write(new string(' ', stack.curr * 2));
             Console.Write('v');
             Console.WriteLine();
+            Console.WriteLine("DUMP:");
+            foreach (var el in stack.elements()) {
+                Console.Write(el + " ");
+            }
+            Console.WriteLine();
+            Console.WriteLine("REGISTERS:");
             foreach (var el in reg) {
                 Console.Write(el + " ");
             }

@@ -333,7 +333,16 @@ class Stack<T> {
 
 class Program {
     static void Main(string[] args) {
-        var path = args[0] ?? "code.txt";
+        string path;
+        if (args.Length == 1) {
+            path = args[0];
+        }
+        else if (args.Length == 0) {
+            path = "code.txt";
+        }
+        else {
+            throw new ArgumentException("The user is a bloody idiot.");
+        }
         var machine = new Machine(File.ReadAllLines(path));
         machine.execute();
     }

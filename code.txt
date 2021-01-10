@@ -5,33 +5,4 @@ push 1
 push 0
 dmp
 
-# length of data stream
-set 8, 4 
-
-:loop1
-# if 1, leave alone
-jnz loop
-# if 0, substract 1 and push it back
-sub 1
-push 
-# decrement counter
-dec 8
-cmp 8, 0
-# rinse and repeat if non-zero
-jnz loop1
- 
-# data is ready on stack
-
-# output in reg B
-mov 1, 0
- 
-# set up counter again
-mov 8, 4
-:loop2
-# add data in reg 0 and reg 1, put result in reg 0
-add 0, 1
-dec 8
-cmp 8, 0
-jnz loop2
-
 

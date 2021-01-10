@@ -28,6 +28,7 @@
     <list default="true" id="3294d390-e470-446f-89cc-615f9105b2c4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/code.txt" beforeDir="false" afterPath="$PROJECT_DIR$/code.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +124,8 @@
       <workItem from="1609980118035" duration="140000" />
       <workItem from="1609980276699" duration="999000" />
       <workItem from="1610065334606" duration="2010000" />
-      <workItem from="1610232079906" duration="4355000" />
+      <workItem from="1610232079906" duration="6034000" />
+      <workItem from="1610294706965" duration="902000" />
     </task>
     <task id="LOCAL-00001" summary="- modify je, jne to use pre-pushed registers instead of stack popping">
       <created>1609977019412</created>
@@ -202,7 +204,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610235983503</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="- improve dmp further">
+      <created>1610236500808</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1610236500808</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,7 +244,8 @@
     <MESSAGE value="." />
     <MESSAGE value="- optimised registers" />
     <MESSAGE value="- improve dmp reg output" />
-    <option name="LAST_COMMIT_MESSAGE" value="- improve dmp reg output" />
+    <MESSAGE value="- improve dmp further" />
+    <option name="LAST_COMMIT_MESSAGE" value="- improve dmp further" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

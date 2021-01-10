@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 enum Instructions : byte {
     push,
@@ -51,14 +52,34 @@ enum Registers : byte {
     regF
 }
 
+// yeah this is *totally* safe
+readonly struct Number {
+    [FieldOffset(0)]
+    public readonly int i;
+    [FieldOffset(0)]
+    public readonly float f;
+
+    public Number(int i) : this() {
+        this.i = i;
+    }
+
+    public Number(float f) : this() {
+        this.f = f;
+    }
+
+    public override string ToString() {
+        return $"{i} ({f})";
+    }
+}
+
 class Machine {
     // const
     public const bool CODE_DUMP = false;
-    private Stack<int> stack;
+    private Stack<Number> stack;
     private string[] code;
     private Dictionary<string, Action> instructions = new();
 
-    private int[] reg = new int[16]; // registers
+    private Number[] reg = new Number[16]; // registers
     /*
      * 0-3 = instruction arguments
      * 4-6 - general purpose
@@ -69,7 +90,7 @@ class Machine {
 
     public Machine(string[] code) {
         this.code = code;
-        stack = new Stack<int>();
+        stack = new Stack<Number>();
         setupInstructions();
         processLabels();
     }
@@ -79,7 +100,14 @@ class Machine {
         for (var i = 0; i < code.Length; i++) {
             var line = code[i];
             if (line.StartsWith(":")) {
-                labels.Add(line.Substring(1), i);
+                try {
+                    labels.Add(line.Substring(1), i);
+                }
+                catch (ArgumentException e) {
+                    Console.WriteLine($"Label with name {line.Substring(1)} has been reused at line {i}, invalid program");
+                    Environment.Exit(1);
+                }
+
                 code[i] = "";
             }
         }
@@ -104,7 +132,7 @@ class Machine {
          * <inst> <arg1>,<arg2>...
          * <inst> [<stackarg1>,<stackarg2>...]
          */
-        instructions.Add("push", () => { stack.push(reg[0]); });
+        instructions.Add("push", () => { stack.push(new Number(reg[0].i)); });
         instructions.Add("pop", () => { stack.pop(); });
         instructions.Add("dmp", () => {
             Console.WriteLine("STACKPTR: " + stack.curr);
@@ -125,31 +153,31 @@ class Machine {
             // add [a, b]
             reg[0] = stack.pop();
             reg[1] = stack.pop();
-            stack.push(reg[0] + reg[1]);
+            stack.push(new Number(reg[0].i + reg[1].i));
         });
         instructions.Add("sub", () => {
             // sub [a, b]
             reg[0] = stack.pop();
             reg[1] = stack.pop();
-            stack.push(reg[0] - reg[1]);
+            stack.push(new Number(reg[0].i - reg[1].i));
         });
         instructions.Add("mul", () => {
             // mul [a, b]
             reg[0] = stack.pop();
             reg[1] = stack.pop();
-            stack.push(reg[0] * reg[1]);
+            stack.push(new Number(reg[0].i * reg[1].i));
         });
         instructions.Add("set", () => {
             // set reg, num
-            reg[reg[0]] = reg[1];
+            reg[reg[0].i] = reg[1];
         });
         instructions.Add("dec", () => {
             // dec reg
-            reg[reg[0]] = reg[reg[0]] - 1;
+            reg[reg[0].i] = new Number(reg[reg[0].i].i - 1);
         });
         instructions.Add("inc", () => {
             // inc reg
-            reg[reg[0]] = reg[reg[0]] + 1;
+            reg[reg[0].i] = new Number(reg[reg[0].i].i + 1);
         });
         instructions.Add("swp", () => {
             // swp
@@ -161,15 +189,15 @@ class Machine {
         instructions.Add("mov", () => {
             // mov reg, [num]
             reg[1] = stack.get();
-            reg[reg[0]] = reg[1];
+            reg[reg[0].i] = reg[1];
         });
         instructions.Add("rmov", () => {
             //rmov reg
-            stack.push(reg[reg[0]]);
+            stack.push(reg[reg[0].i]);
         });
         instructions.Add("smov", () => {
             //smov reg, reg2
-            reg[reg[1]] = reg[reg[0]];
+            reg[reg[1].i] = reg[reg[0].i];
         });
         instructions.Add("jmp", () => {
             // jmp dst
@@ -178,50 +206,50 @@ class Machine {
         instructions.Add("jz", () => {
             // jz dst, [val]
             reg[1] = stack.get();
-            if (reg[1] == 0) {
+            if (reg[1].i == 0) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("jnz", () => {
             // jnz dst, [val]
             reg[1] = stack.get();
-            if (reg[1] != 0) {
+            if (reg[1].i != 0) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("je", () => {
             // je dst, reg1, [val] 
             reg[2] = stack.get();
-            if (reg[1] == reg[2]) {
+            if (reg[1].i == reg[2].i) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("jne", () => {
             // jne dst, reg1, [val]
             reg[2] = stack.get();
-            if (reg[1] != reg[2]) {
+            if (reg[1].i != reg[2].i) {
                 reg[7] = reg[0];
             }
         });
         instructions.Add("shr", () => {
             // shr reg, cnt
-            reg[reg[0]] = reg[reg[0]] >> reg[1];
+            reg[reg[0].i] = new Number(reg[reg[0].i].i >> reg[1].i);
         });
         instructions.Add("shl", () => {
             // shl reg, cnt
-            reg[reg[0]] = reg[reg[0]] << reg[1];
+            reg[reg[0].i] = new Number(reg[reg[0].i].i << reg[1].i);
         });
         instructions.Add("not", () => {
             // not reg, idx
-            reg[reg[0]] ^= 1 << reg[1];
+            reg[reg[0].i] = new Number(reg[reg[0].i].i ^ 1 << reg[1].i);
         });
         instructions.Add("stb", () => {
             // stb reg, idx
-            reg[reg[0]] |= 1 << reg[1];
+            reg[reg[0].i] = new Number(reg[reg[0].i].i | 1 << reg[1].i);
         });
         instructions.Add("clr", () => {
             // clr reg, idx
-            reg[reg[0]] &= ~(1 << reg[1]);
+            reg[reg[0].i] = new Number(reg[reg[0].i].i & ~(1 << reg[1].i));
         });
     }
 
@@ -244,10 +272,10 @@ class Machine {
             var inst = line.Substring(0, instSep);
             var args = line.Substring(instSep + 1).Replace(" ", "").Split(",");
             executeInstruction(inst, args);
-            if (reg[7] != 0) {
+            if (reg[7].i != 0) {
                 // test jmp counter after inst
-                i = reg[7]; // jump to line
-                reg[7] = 0; // clear jmp counter
+                i = reg[7].i; // jump to line
+                reg[7] = new Number(0); // clear jmp counter
             }
         }
 
@@ -256,7 +284,7 @@ class Machine {
 
     private void executeInstruction(string inst, params string[] args) {
         for (int i = 0; i < args.Length; i++) {
-            reg[i] = int.Parse(args[i]);
+            reg[i] = new Number(int.Parse(args[i]));
         }
 
         instructions[inst]();

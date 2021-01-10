@@ -53,6 +53,7 @@ enum Registers : byte {
 }
 
 // yeah this is *totally* safe
+[StructLayout(LayoutKind.Explicit)]
 readonly struct Number {
     [FieldOffset(0)]
     public readonly int i;

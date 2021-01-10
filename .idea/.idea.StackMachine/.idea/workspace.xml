@@ -26,6 +26,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3294d390-e470-446f-89cc-615f9105b2c4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/test.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,6 +51,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/947CFA9E-93C5-4D21-8EE6-CD975672A1F8/38/String.Manipulation.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/C80B499D-ADA7-49E0-A8EE-7A9B1744160B/41A/List.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/947CFA9E-93C5-4D21-8EE6-CD975672A1F8/337/TextReader.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C80B499D-ADA7-49E0-A8EE-7A9B1744160B/48/21009917/LayoutKind.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/947CFA9E-93C5-4D21-8EE6-CD975672A1F8/7b/d109e56b/Action.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/EA91AA82-E599-43A3-8833-54FD04AE363C/17/StringReader.cs" root0="SKIP_HIGHLIGHTING" />
@@ -123,7 +127,7 @@
       <workItem from="1609980276699" duration="999000" />
       <workItem from="1610065334606" duration="2010000" />
       <workItem from="1610232079906" duration="6034000" />
-      <workItem from="1610294706965" duration="1223000" />
+      <workItem from="1610294706965" duration="1683000" />
     </task>
     <task id="LOCAL-00001" summary="- modify je, jne to use pre-pushed registers instead of stack popping">
       <created>1609977019412</created>
@@ -216,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610295626070</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="- fix compiling error">
+      <created>1610296020734</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1610296020734</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -251,7 +262,8 @@
     <MESSAGE value="- improve dmp reg output" />
     <MESSAGE value="- improve dmp further" />
     <MESSAGE value="- migrate to universal numbers" />
-    <option name="LAST_COMMIT_MESSAGE" value="- migrate to universal numbers" />
+    <MESSAGE value="- fix compiling error" />
+    <option name="LAST_COMMIT_MESSAGE" value="- fix compiling error" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

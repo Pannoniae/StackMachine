@@ -333,7 +333,8 @@ class Stack<T> {
 
 class Program {
     static void Main(string[] args) {
-        var machine = new Machine(File.ReadAllLines("code.txt"));
+        var path = args[0] ?? "code.txt";
+        var machine = new Machine(File.ReadAllLines(path));
         machine.execute();
     }
 }

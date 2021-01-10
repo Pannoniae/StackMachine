@@ -196,10 +196,10 @@ class Machine {
 
             if (mov.args.Length == 1) {
                 if (mov.isStackArg(0)) {
-                    newInst = new Instruction(Instructions.mov_s2r, stripStackArg(mov.args[0]));
+                    newInst = new Instruction(Instructions.mov_r2s, stripStackArg(mov.args[0]));
                 }
                 else {
-                    newInst = new Instruction(Instructions.mov_r2s, mov.args[0]);
+                    newInst = new Instruction(Instructions.mov_s2r, mov.args[0]);
                 }
             }
 
@@ -285,7 +285,7 @@ class Machine {
         //    reg[reg[0].i] = reg[1];
         //});
         instructions.Add("mov_s2r", () => {
-            // mov_s2r reg, [num], stack to register 
+            // mov_s2r reg, [num], stack to register
             reg[1] = stack.get();
             reg[reg[0].i] = reg[1];
         });

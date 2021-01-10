@@ -26,11 +26,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3294d390-e470-446f-89cc-615f9105b2c4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code.txt" beforeDir="false" afterPath="$PROJECT_DIR$/code.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,8 +67,8 @@
   <component name="IdeDocumentHistory">
     <changedPaths>
       <option value="$PROJECT_DIR$/.gitignore" />
-      <option value="$PROJECT_DIR$/Program.cs" />
       <option value="$PROJECT_DIR$/code.txt" />
+      <option value="$PROJECT_DIR$/Program.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1mfhHzMQMpODWQAE8ebZ3vr5Dq3" />
@@ -134,7 +131,7 @@
       <workItem from="1609980276699" duration="999000" />
       <workItem from="1610065334606" duration="2010000" />
       <workItem from="1610232079906" duration="6034000" />
-      <workItem from="1610294706965" duration="7334000" />
+      <workItem from="1610294706965" duration="7680000" />
     </task>
     <task id="LOCAL-00001" summary="- modify je, jne to use pre-pushed registers instead of stack popping">
       <created>1609977019412</created>
@@ -255,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610296896277</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="- implement mnemonics">
+      <created>1610303069753</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1610303069753</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -294,7 +298,8 @@
     <MESSAGE value="- configurable input program" />
     <MESSAGE value="- actually fix the program lol" />
     <MESSAGE value="- update gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="- update gitignore" />
+    <MESSAGE value="- implement mnemonics" />
+    <option name="LAST_COMMIT_MESSAGE" value="- implement mnemonics" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

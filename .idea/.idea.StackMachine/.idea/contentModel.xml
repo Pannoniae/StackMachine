@@ -20,7 +20,6 @@
       <e p="README.md" t="Include" />
       <e p="StackMachine.csproj" t="IncludeRecursive" />
       <e p="StackMachine.sln" t="IncludeFlat" />
-      <e p="test.txt" t="Include" />
     </e>
   </component>
 </project>

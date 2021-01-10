@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 
 enum Instructions : byte {
     push,
@@ -18,6 +20,7 @@ enum Instructions : byte {
     dec,
     inc,
     swp,
+    mov, // this doesn't exist at runtime, just for preprocess
     mov_r2s, // register to stack
     mov_s2r, // stack to register
     mov_r2r, // register to register
@@ -55,10 +58,8 @@ enum Registers : byte {
 // yeah this is *totally* safe
 [StructLayout(LayoutKind.Explicit)]
 readonly struct Number {
-    [FieldOffset(0)]
-    public readonly int i;
-    [FieldOffset(0)]
-    public readonly float f;
+    [FieldOffset(0)] public readonly int i;
+    [FieldOffset(0)] public readonly float f;
 
     public Number(int i) : this() {
         this.i = i;
@@ -75,10 +76,14 @@ readonly struct Number {
 
 class Machine {
     // const
-    public const bool CODE_DUMP = false;
+    public const bool CODE_DUMP = true;
     private Stack<Number> stack;
     private string[] code;
     private Dictionary<string, Action> instructions = new();
+
+    private static Dictionary<string, Func<Instruction, Instruction>> mnemonics = new() {
+        {"mov", Instruction.movProcessor}
+    };
 
     private Number[] reg = new Number[16]; // registers
     /*
@@ -94,6 +99,13 @@ class Machine {
         stack = new Stack<Number>();
         setupInstructions();
         processLabels();
+        processMnemonics();
+        if (CODE_DUMP) {
+            for (var i = 0; i < code.Length; i++) {
+                var o = code[i];
+                Console.Out.WriteLine($"{i}: {o}");
+            }
+        }
     }
 
     private void processLabels() {
@@ -105,7 +117,8 @@ class Machine {
                     labels.Add(line.Substring(1), i);
                 }
                 catch (ArgumentException e) {
-                    Console.WriteLine($"Label with name {line.Substring(1)} has been reused at line {i}, invalid program");
+                    Console.WriteLine(
+                        $"Label with name {line.Substring(1)} has been reused at line {i}, invalid program");
                     Environment.Exit(1);
                 }
 
@@ -118,11 +131,90 @@ class Machine {
                 code[i] = code[i].Replace(label.Key, label.Value.ToString());
             }
         }
+    }
 
-        if (CODE_DUMP) {
-            for (var i = 0; i < code.Length; i++) {
-                var o = code[i];
-                Console.Out.WriteLine($"{i}: {o}");
+    class Instruction {
+        public Instructions inst;
+        public string[] args;
+
+        public Instruction(Instructions inst, string[] args) {
+            this.inst = inst;
+            this.args = args;
+        }
+
+        public Instruction(Instructions inst) {
+            this.inst = inst;
+            this.args = Array.Empty<string>();
+        }
+
+        public Instruction(Instructions inst, string arg) {
+            this.inst = inst;
+            this.args = new[] {arg};
+        }
+
+        public string print() {
+            var sb = new StringBuilder();
+            sb.Append(inst.ToString());
+            sb.Append(' ');
+            sb.AppendJoin(", ", args);
+            return sb.ToString();
+        }
+
+        // returns whether the arg at index i is an argument which will get pushed onto the stack
+        public bool isStackArg(int i) {
+            return args[i].StartsWith("[");
+        }
+
+        // strip the brackets around a stack arg
+        public static string stripStackArg(string arg) {
+            return arg[1..^1];
+        }
+
+        public static Instruction parse(string line) {
+            if (line.StartsWith("#") || line == string.Empty) {
+                // rem
+                return null;
+            }
+
+            var instSep = line.IndexOf(" "); // after the instruction, before any arguments
+            if (instSep == -1) {
+                Instructions i = Enum.Parse<Instructions>(line);
+                return new Instruction(i);
+            }
+
+            var _inst = line.Substring(0, instSep);
+            var args = line.Substring(instSep + 1).Replace(" ", "").Split(",");
+            Instructions _i = Enum.Parse<Instructions>(_inst);
+            return new Instruction(_i, args);
+        }
+
+        public static Instruction movProcessor(Instruction mov) {
+            Instruction newInst = null; // won't be null but the c# compiler doesn't shut up
+            if (mov.args.Length == 2) {
+                newInst = new Instruction(Instructions.mov_r2r, mov.args);
+            }
+
+            if (mov.args.Length == 1) {
+                if (mov.isStackArg(0)) {
+                    newInst = new Instruction(Instructions.mov_s2r, stripStackArg(mov.args[0]));
+                }
+                else {
+                    newInst = new Instruction(Instructions.mov_r2s, mov.args[0]);
+                }
+            }
+
+            return newInst;
+        }
+    }
+
+    private void processMnemonics() {
+        for (var i = 0; i < code.Length; i++) {
+            var line = code[i];
+            var inst = Instruction.parse(line);
+            if (inst == null) continue;
+            var instName = inst.inst.ToString();
+            if (mnemonics.ContainsKey(instName)) {
+                code[i] = mnemonics[instName](inst).print();
             }
         }
     }
@@ -187,17 +279,22 @@ class Machine {
             stack.push(reg[0]);
             stack.push(reg[1]);
         });
-        instructions.Add("mov", () => {
-            // mov reg, [num]
+        //instructions.Add("mov", () => {
+        //    // mov reg, [num]
+        //    reg[1] = stack.get();
+        //    reg[reg[0].i] = reg[1];
+        //});
+        instructions.Add("mov_s2r", () => {
+            // mov_s2r reg, [num], stack to register 
             reg[1] = stack.get();
             reg[reg[0].i] = reg[1];
         });
-        instructions.Add("rmov", () => {
-            //rmov reg
+        instructions.Add("mov_r2s", () => {
+            //mov_r2s [reg], register to stack
             stack.push(reg[reg[0].i]);
         });
-        instructions.Add("smov", () => {
-            //smov reg, reg2
+        instructions.Add("mov_r2r", () => {
+            //mov_r2r reg, reg2, register to register
             reg[reg[1].i] = reg[reg[0].i];
         });
         instructions.Add("jmp", () => {
@@ -257,22 +354,11 @@ class Machine {
     public void execute() {
         for (var i = 0; i < code.Length; i++) {
             var line = code[i];
-            if (line.StartsWith("#") || line == string.Empty) {
-                // rem
-                continue;
-            }
 
             //Console.WriteLine("lineno: " + i);
-            var instSep = line.IndexOf(" "); // after the instruction, before any arguments
-            if (instSep == -1) {
-                // no args
-                executeInstruction(line); // just push the whole thing in, there are no args
-                continue;
-            }
-
-            var inst = line.Substring(0, instSep);
-            var args = line.Substring(instSep + 1).Replace(" ", "").Split(",");
-            executeInstruction(inst, args);
+            var inst = Instruction.parse(line);
+            if (inst == null) continue;
+            executeInstruction(inst.inst.ToString(), inst.args);
             if (reg[7].i != 0) {
                 // test jmp counter after inst
                 i = reg[7].i; // jump to line
@@ -343,6 +429,7 @@ class Program {
         else {
             throw new ArgumentException("The user is a bloody idiot.");
         }
+
         var machine = new Machine(File.ReadAllLines(path));
         machine.execute();
     }

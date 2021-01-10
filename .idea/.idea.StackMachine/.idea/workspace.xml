@@ -26,9 +26,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3294d390-e470-446f-89cc-615f9105b2c4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.StackMachine/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/code.txt" beforeDir="false" afterPath="$PROJECT_DIR$/code.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,17 +57,21 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/IL/EA91AA82-E599-43A3-8833-54FD04AE363C/ad/d722b20e/0200002Apdb.il" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/081372C7-3509-4D45-BD06-A6A9BC610C6B/2E/ToCollection.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/947CFA9E-93C5-4D21-8EE6-CD975672A1F8/CB/SpanHelpers.Char.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/C80B499D-ADA7-49E0-A8EE-7A9B1744160B/412/Dictionary.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/947CFA9E-93C5-4D21-8EE6-CD975672A1F8/39/String.Searching.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/947CFA9E-93C5-4D21-8EE6-CD975672A1F8/38/String.Manipulation.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/C80B499D-ADA7-49E0-A8EE-7A9B1744160B/41A/List.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/D8D2C879-DE5D-4407-A14A-313591EA687C/12/Contains.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/C80B499D-ADA7-49E0-A8EE-7A9B1744160B/28/Enum.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/947CFA9E-93C5-4D21-8EE6-CD975672A1F8/7b/d109e56b/Action.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/947CFA9E-93C5-4D21-8EE6-CD975672A1F8/c6/d2da7a12/Action`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C80B499D-ADA7-49E0-A8EE-7A9B1744160B/ec/ff8da666/ExceptionResource.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/code.txt" />
+      <option value="$PROJECT_DIR$/.gitignore" />
       <option value="$PROJECT_DIR$/Program.cs" />
+      <option value="$PROJECT_DIR$/code.txt" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1mfhHzMQMpODWQAE8ebZ3vr5Dq3" />
@@ -128,7 +134,7 @@
       <workItem from="1609980276699" duration="999000" />
       <workItem from="1610065334606" duration="2010000" />
       <workItem from="1610232079906" duration="6034000" />
-      <workItem from="1610294706965" duration="2082000" />
+      <workItem from="1610294706965" duration="7334000" />
     </task>
     <task id="LOCAL-00001" summary="- modify je, jne to use pre-pushed registers instead of stack popping">
       <created>1609977019412</created>
@@ -235,7 +241,21 @@
       <option name="project" value="LOCAL" />
       <updated>1610296458287</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="- actually fix the program lol">
+      <created>1610296831012</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1610296831012</updated>
+    </task>
+    <task id="LOCAL-00017" summary="- update gitignore">
+      <created>1610296896277</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1610296896277</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,7 +292,9 @@
     <MESSAGE value="- migrate to universal numbers" />
     <MESSAGE value="- fix compiling error" />
     <MESSAGE value="- configurable input program" />
-    <option name="LAST_COMMIT_MESSAGE" value="- configurable input program" />
+    <MESSAGE value="- actually fix the program lol" />
+    <MESSAGE value="- update gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="- update gitignore" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

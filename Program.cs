@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-enum Instructions : byte {
+enum InstructionType : byte {
     push,
     pop,
     dmp,
@@ -33,7 +33,9 @@ enum Instructions : byte {
     shl,
     not,
     stb,
-    clr
+    clr,
+    call,
+    ret
 }
 
 enum Registers : byte {
@@ -78,6 +80,8 @@ class Machine {
     // const
     public const bool CODE_DUMP = true;
     private Stack<Number> stack;
+    private Stack<int> fstack;
+    
     private string[] code;
     private Dictionary<string, Action> instructions = new();
 
@@ -97,6 +101,7 @@ class Machine {
     public Machine(string[] code) {
         this.code = code;
         stack = new Stack<Number>();
+        fstack = new Stack<int>();
         setupInstructions();
         processLabels();
         processMnemonics();
@@ -134,20 +139,20 @@ class Machine {
     }
 
     class Instruction {
-        public Instructions inst;
+        public InstructionType inst;
         public string[] args;
 
-        public Instruction(Instructions inst, string[] args) {
+        public Instruction(InstructionType inst, string[] args) {
             this.inst = inst;
             this.args = args;
         }
 
-        public Instruction(Instructions inst) {
+        public Instruction(InstructionType inst) {
             this.inst = inst;
             this.args = Array.Empty<string>();
         }
 
-        public Instruction(Instructions inst, string arg) {
+        public Instruction(InstructionType inst, string arg) {
             this.inst = inst;
             this.args = new[] {arg};
         }
@@ -178,28 +183,28 @@ class Machine {
 
             var instSep = line.IndexOf(" "); // after the instruction, before any arguments
             if (instSep == -1) {
-                Instructions i = Enum.Parse<Instructions>(line);
+                InstructionType i = Enum.Parse<InstructionType>(line);
                 return new Instruction(i);
             }
 
             var _inst = line.Substring(0, instSep);
             var args = line.Substring(instSep + 1).Replace(" ", "").Split(",");
-            Instructions _i = Enum.Parse<Instructions>(_inst);
+            InstructionType _i = Enum.Parse<InstructionType>(_inst);
             return new Instruction(_i, args);
         }
 
         public static Instruction movProcessor(Instruction mov) {
             Instruction newInst = null; // won't be null but the c# compiler doesn't shut up
             if (mov.args.Length == 2) {
-                newInst = new Instruction(Instructions.mov_r2r, mov.args);
+                newInst = new Instruction(InstructionType.mov_r2r, mov.args);
             }
 
             if (mov.args.Length == 1) {
                 if (mov.isStackArg(0)) {
-                    newInst = new Instruction(Instructions.mov_r2s, stripStackArg(mov.args[0]));
+                    newInst = new Instruction(InstructionType.mov_r2s, stripStackArg(mov.args[0]));
                 }
                 else {
-                    newInst = new Instruction(Instructions.mov_s2r, mov.args[0]);
+                    newInst = new Instruction(InstructionType.mov_s2r, mov.args[0]);
                 }
             }
 
@@ -348,6 +353,21 @@ class Machine {
         instructions.Add("clr", () => {
             // clr reg, idx
             reg[reg[0].i] = new Number(reg[reg[0].i].i & ~(1 << reg[1].i));
+        });
+        instructions.Add("call", () => {
+            // call addr
+            // calling convention: first 4 args in reg0-4, rest on stack
+            // this sets jmp to the new address
+            // return value is placed in reg9-A, if it doesn't fit then stack
+            // TODO support heap as well, fuck it
+            fstack.push(reg[7].i + 1); // push our current address + 1 to the function stack so we can return later
+            reg[7] = reg[0];
+        });
+        instructions.Add("ret", () => {
+            // ret
+            // restore state from stack
+            // after you ret, you must clean up the stack by popping everything off
+            reg[7] = new Number(fstack.pop());
         });
     }
 
